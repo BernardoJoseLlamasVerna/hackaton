@@ -66,46 +66,43 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Star Wars Character search
-                </div>
-
-                <div class="refresh">
-                    <div>Refresh the cache to load data from swapi.co</div>
-                    <button type="submit" onclick="window.location='{{ url("/characters") }}'" class="btn btn-block btn-primary">Refresh Cache</button>
-                </div>
-
-                <div class="searchString">
-                    <div>Search by random string</div>
-                    <div>
-                        <textarea name="search"></textarea>
-                        <button type="submit" class="btn btn-block btn-primary">Search</button>
-                    </div>
-                </div>
-
-                <div class="searchSkinAndHairColors">
-                    <div>Search by skin and hair colors</div>
-                    <div>
-                        <select name="skin" id="skinId"></select>
-                        <select name="hair" id="hairId"></select>
-                        <button type="submit" class="btn btn-block btn-primary">Search</button>
-                    </div>
-                </div>
-
-
+            <div class="title m-b-md">
+                Star Wars Character search
             </div>
+
+            <div class="refresh">
+                <div>Refresh the cache to load data from swapi.co</div>
+                <button type="submit" onclick="window.location='{{ url("/characters") }}'" class="btn btn-block btn-primary">Refresh Cache</button>
+            </div>
+
+            <form name="searchByName" action="/" method="get">
+                <div>Search by random string</div>
+                <div>
+                    <textarea name="randomString" placeholder="Type a name"></textarea>
+                    <button type="submit" class="btn btn-block btn-primary">Search</button>
+                </div>
+            </form>
+
+            @foreach($characters as $character)
+                <li>{{$character->characterName}}</li>
+            @endforeach
+
+            <form name="searchBySkinHair" action="/" method="get">
+                <div>Search by skin and hair colors</div>
+                <div>
+                    <select name="skin" id="skinId">
+                        @foreach($skins as $skin)
+                            <option value="{{$skin->skinId}}">{{$skin->skinName}}</option>
+                        @endforeach
+                    </select>
+                    <select name="hair" id="hairId">
+                        @foreach($hairs as $hair)
+                            <option value="{{$hair->hairId}}">{{$hair->colorName}}</option>
+                        @endforeach
+                    </select>
+                    <button type="submit" class="btn btn-block btn-primary">Search</button>
+                </div>
+            </form>
         </div>
     </body>
 </html>

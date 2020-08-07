@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Character;
+use App\Models\HairColor;
+use App\Models\SkinColor;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class CharactersController extends Controller
 {
     /**
+     * Get all characters from SWAPI and Refresh DB if there are new characters.
      * @return mixed
      */
     public function getAllCharactersAndRefresh()
@@ -21,15 +25,29 @@ class CharactersController extends Controller
     }
 
     /**
-     * @param $randomString
+     * Given a string, return character(s) with similar name.
+     * @param Request $request
      * @return Character[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function searchCharactersByName()
+    public function searchCharacters(Request $request)
     {
-        $randomString = 'Darth Vader';
+        $characters = [];
 
-        $characters = Character::all();
+        if($request->get('randomString')) {
+            $characters = Character::searchingCharacters($request->get('randomString'));
+        }
 
-        return $characters = Character::searchingCharacters($characters, $randomString);
+        $skins = SkinColor::all();
+        $hairs = HairColor::all();
+
+        if($request->get('skin') && $request->get('hair')) {
+            $characters = Character::searchingCharactersBySkinHair($request->get('skin'), $request->get('hair'));
+        }
+
+        return view('welcome')->with([
+            'characters' => $characters,
+            'skins' => $skins,
+            'hairs' => $hairs,
+        ]);
     }
 }

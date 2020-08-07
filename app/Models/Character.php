@@ -117,10 +117,18 @@ class Character extends Model
         return $humans;
     }
 
-    public static function searchingCharacters($characters, $word)
+    /**
+     * Function to search characters with name similar to a given string.
+     * @param $word
+     * @return mixed
+     */
+    public static function searchingCharacters($word)
     {
-        $characters->where('characterName', 'like', '%'.$word.'%');
+        return Character::where('characterName', 'like', '%'.$word.'%')->get();
+    }
 
-        return $characters;
+    public static function searchingCharactersBySkinHair($skinId, $hairId)
+    {
+        return Character::where(['skinId' => $skinId, 'hairId' => $hairId])->get();
     }
 }

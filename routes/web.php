@@ -11,9 +11,11 @@
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
-});
+});*/
 
 Route::get('/characters', 'CharactersController@getAllCharactersAndRefresh');
-// Route::get('/characters', 'CharactersController@searchCharactersByName');
+
+// Route::get('/searchByName', 'CharactersController@searchCharactersByName');
+Route::get('/', 'CharactersController@searchCharacters');
