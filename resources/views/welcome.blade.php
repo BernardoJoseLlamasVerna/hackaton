@@ -84,7 +84,7 @@
 
                 <div class="refresh">
                     <div>Refresh the cache to load data from swapi.co</div>
-                    <button type="submit" class="btn btn-block btn-primary">Refresh Cache</button>
+                    <button type="submit" onclick="window.location='{{ url("/characters") }}'" class="btn btn-block btn-primary">Refresh Cache</button>
                 </div>
 
                 <div class="searchString">

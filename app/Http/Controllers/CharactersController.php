@@ -10,15 +10,12 @@ class CharactersController extends Controller
     /**
      * @return mixed
      */
-    public function getAllCharacters()
+    public function getAllCharactersAndRefresh()
     {
         $numberOfCharacters = json_decode(file_get_contents('https://swapi.dev/api/people/'), true)['count'];
         $pageNumber = ceil($numberOfCharacters/10);
 
         $humans = Character::getAllHumanCharacters($pageNumber);
-
-        print_r($humans);
-        die();
 
         return $humans;
     }

@@ -15,5 +15,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/characters', 'CharactersController@getAllCharacters');
-Route::get('/characters', 'CharactersController@searchCharactersByName');
+Route::get('/characters', 'CharactersController@getAllCharactersAndRefresh');
+// Route::get('/characters', 'CharactersController@searchCharactersByName');

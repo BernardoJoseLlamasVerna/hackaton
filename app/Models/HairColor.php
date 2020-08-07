@@ -23,7 +23,7 @@ class HairColor extends Model
     ];
 
     /**
-     * HairColor has many characters
+     * Relationship: HairColor has many characters
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function character()

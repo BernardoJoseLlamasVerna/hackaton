@@ -23,7 +23,7 @@ class SkinColor extends Model
     ];
 
     /**
-     * SkinColor has many characters
+     * Relationship: SkinColor has many characters
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function character()

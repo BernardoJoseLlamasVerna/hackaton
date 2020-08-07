@@ -29,7 +29,7 @@ class Character extends Model
     ];
 
     /**
-     * A character has one value of skinColor
+     * Relationship: A character has one value of skinColor
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function skinColor()
@@ -38,11 +38,22 @@ class Character extends Model
     }
 
     /**
+     * Relationship: A character has one value of hairColor
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function hairColor()
+    {
+        return $this->hasOne(HairColor::class);
+    }
+
+    /**
+     * Function to get only humans characters.
      * @param $pageNumber
      * @return array
      */
     public static function getAllHumanCharacters($pageNumber)
     {
+        //search all human characters on each page:
         $humans = [];
         for($i = 1; $i<= $pageNumber; $i++)
         {
@@ -55,29 +66,26 @@ class Character extends Model
             }
         }
 
-        //llamamos a ver si hace falta insertar y checkeamos si existe en la tabla
+        //check if character already exists on DB and insert if not:
         return Character::insertCharacters($humans);
-        //llamamos a ver si hace falta insertar
-
-        // return $humans;
     }
 
     /**
+     * Function that inserts characters on DB
      * @param $humans
      * @return string
      */
     private static function insertCharacters($humans)
     {
         foreach ($humans as $human) {
-            // sacar el id del usuario de la url
+            //user id in Swapi:
             $matches = [];
             preg_match('/\d+/', $human['url'], $matches);
             $humanSwapId = intval($matches[0]);
-            // sacar el id del usuario de la url
 
             $humanSwapIdsFromTable = Character::all()->pluck('characterIdInSwapi')->toArray();
 
-            // checkeamos skinColor
+            // check skinColor
             $skinColors = SkinColor::all()->pluck('skinName')->toArray();
             if(!in_array($human['skin_color'], $skinColors)) {
                 $skinColor = new SkinColor();
@@ -85,9 +93,8 @@ class Character extends Model
                 $skinColor->save();
             }
             $skinColorId = SkinColor::where('skinName', $human['skin_color'])->pluck('skinId')->first();
-            // checkeamos skinColor
 
-            // checkeamos hairColor
+            // check hairColor
             $hairColors = HairColor::all()->pluck('colorName')->toArray();
             if(!in_array($human['hair_color'], $hairColors)) {
                 $hairColor = new HairColor();
@@ -95,8 +102,8 @@ class Character extends Model
                 $hairColor->save();
             }
             $hairColorId = HairColor::where('colorName', $human['hair_color'])->pluck('hairId')->first();
-            // checkeamos hairColor
 
+            // if user doesnt exist, insert on DB:
             if(!in_array($humanSwapId, $humanSwapIdsFromTable)) {
                 $character = new Character();
                 $character->skinId = $skinColorId;
